@@ -16,20 +16,20 @@ public class ConnectFour {
             makeMove(keyboard);
             displayBoard();
 
-            // char winner = checkWinner();
-            // if (winner == 'X') {
-            //     System.out.println("Player 1 (X) wins!");
-            //     break;
-            // } else if (winner == 'O') {
-            //     System.out.println("Player 2 (O) wins!");
-            //     break;
-            // } else if (checkDraw()) {
-            //     System.out.println("It's a draw!");
-            //     break;
-            // }
+            char winner = checkWinner();
+            if (winner == 'X') {
+                System.out.println("Player 1 (X) wins!");
+                break;
+            } else if (winner == 'O') {
+                System.out.println("Player 2 (O) wins!");
+                break;
+            } else if (checkDraw()) {
+                System.out.println("It's a draw!");
+                break;
+            }
         }
 
-        // keyboard.close();
+        keyboard.close();
     }
 
     public static void initBoard() {
@@ -84,5 +84,56 @@ public class ConnectFour {
         isPlayerOneTurn = !isPlayerOneTurn;
     }
 
-  
+    public static char checkWinner() {
+        // Check horizontal
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c <= COLS - 4; c++) {
+                char curr = board[r][c];
+                if (curr != ' ' && curr == board[r][c + 1] && curr == board[r][c + 2] && curr == board[r][c + 3]) {
+                    return curr;
+                }
+            }
+        }
+
+        // Check vertical
+        for (int c = 0; c < COLS; c++) {
+            for (int r = 0; r <= ROWS - 4; r++) {
+                char curr = board[r][c];
+                if (curr != ' ' && curr == board[r + 1][c] && curr == board[r + 2][c] && curr == board[r + 3][c]) {
+                    return curr;
+                }
+            }
+        }
+
+        // Check diagonals (bottom left to top right)
+        for (int r = 3; r < ROWS; r++) {
+            for (int c = 0; c <= COLS - 4; c++) {
+                char curr = board[r][c];
+                if (curr != ' ' && curr == board[r - 1][c + 1] && curr == board[r - 2][c + 2] && curr == board[r - 3][c + 3]) {
+                    return curr;
+                }
+            }
+        }
+
+        // Check diagonals (top left to bottom right)
+        for (int r = 0; r <= ROWS - 4; r++) {
+            for (int c = 0; c <= COLS - 4; c++) {
+                char curr = board[r][c];
+                if (curr != ' ' && curr == board[r + 1][c + 1] && curr == board[r + 2][c + 2] && curr == board[r + 3][c + 3]) {
+                    return curr;
+                }
+            }
+        }
+
+        return ' '; // No winner
+    }
+
+    public static boolean checkDraw() {
+        for (int c = 0; c < COLS; c++) {
+            if (board[0][c] == ' ') {
+                return false;
+            }
+        }
+        return true;
+    }
 }
